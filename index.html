@@ -20,17 +20,33 @@
       const root = document.querySelector("#root");
 
       const List = ({ swPeople }) => {
-        console.log(swPeople);
         return (
           <ul>
             {swPeople.map(person => {
-              return <li key={person.id}>
-                <a href={`#${person.id}`}>
-                {person.name}
-                </a>
-                </li>;
+              return (
+                <li key={person.id}>
+                  <a href={`#${person.id}`}>{person.name}</a>
+                </li>
+              );
             })}
           </ul>
+        );
+      };
+
+      const Details = ({ person }) => {
+        return (
+          <div>
+            <h1>{`Details For ${person.name}`}</h1>
+            <hr id="detailsLine" />
+            <p>{`Height: ${person.height}`}</p>
+            <hr />
+            <p>{`Mass: ${person.mass}`}</p>
+            <hr />
+            <p>{`Hair Color: ${person.hair_color}`}</p>
+            <hr />
+            <p>{`Birth Year: ${person.birth_year}`}</p>
+            <hr />
+          </div>
         );
       };
 
@@ -54,7 +70,7 @@
           }
 
           const swPeopleArr = [];
-          for (let i = 1; i < 6; i++) {
+          for (let i = 1; i < 88; i++) {
             const response = await fetch(`https://swapi.co/api/people/${i}/`);
             const data = await response.json();
             data.id = i;
@@ -68,18 +84,15 @@
 
         render() {
           const { swPeople, id } = this.state;
-          {
-          }
+          const person = swPeople.find(person => person.id === id);
           return (
             <div>
               <h1>Star Wars - React</h1>
               <p>
                 <a href="#">Hide Details</a>
               </p>
-              {
-                !id ? <List swPeople={swPeople} /> : null
-              }
-
+              {!id ? <List swPeople={swPeople} /> : null}
+              {person ? <Details person={person} /> : null}
             </div>
           );
         }
